@@ -1,0 +1,53 @@
+# Compilação e builds
+target/
+out/
+
+# Maven Wrapper
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+**/target/
+
+# Arquivos de log
+*.log
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse / STS
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# Arquivos temporários do sistema
+*.tmp
+*.swp
+*.bak
+*~
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Configs pessoais e de IDE
+.vscode/
+*.code-workspace
+
+# Arquivos de execução e build
+*.jar
+*.war
+
+# Test coverage e relatórios
+coverage/
+jacoco.exec
+build/
+
+# Configurações de containers e dependências locais
+.env
+docker-compose.override.yml

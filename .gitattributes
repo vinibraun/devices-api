@@ -1,0 +1,16 @@
+/mvnw text eol=lf
+/mvnw.cmd text eol=crlf
+
+# Scripts
+*.sh text eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+*.java text
+*.xml text
+*.yml text
+*.properties text
+
+*.png binary
+*.jpg binary
+*.jar binary
