@@ -21,6 +21,7 @@ public class DeviceMapper { //SINGLE RESPONSIBILITY PRINCIPLE (SRP)
                 .id(device.getId())
                 .name(device.getName())
                 .brand(device.getBrand())
+                .state(device.getState())
                 .createdAt(device.getCreatedAt())
                 .build();
     }

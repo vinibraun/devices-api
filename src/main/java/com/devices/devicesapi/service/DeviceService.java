@@ -19,11 +19,11 @@ public class DeviceService {
         this.deviceRepository = deviceRepository;
     }
 
-    public void createDevice(DeviceDTO dto){
-        deviceRepository.save(DeviceMapper.toEntity(dto));
+    public Device createDevice(DeviceDTO dto){
+        return deviceRepository.save(DeviceMapper.toEntity(dto));
     }
 
-    public void updateDevice(Long id, DeviceDTO dto){
+    public Device updateDevice(Long id, DeviceDTO dto){
         Device device = deviceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Device not found with ID: " + id));
 
@@ -32,13 +32,10 @@ public class DeviceService {
                 throw new IllegalStateException("Cannot update name or brand while device is in use.");
             }
         }
-        if (!device.getCreatedAt().equals(dto.getCreatedAt()))
-            throw new IllegalStateException("Not allowed to update Creation Time.");
-
         device.setName(dto.getName());
         device.setBrand(dto.getBrand());
         device.setState(dto.getState());
-        deviceRepository.save(device);
+        return deviceRepository.save(device);
     }
 
     public void deleteDevice(Long id){

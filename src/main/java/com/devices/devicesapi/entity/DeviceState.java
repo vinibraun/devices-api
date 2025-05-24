@@ -1,7 +1,7 @@
 package com.devices.devicesapi.entity;
 
 public enum DeviceState {
-    AVALIABLE,
+    AVAILABLE,
     IN_USE,
     INACTIVE
 }
