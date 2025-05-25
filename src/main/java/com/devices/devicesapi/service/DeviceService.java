@@ -9,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DeviceService {
@@ -36,6 +37,34 @@ public class DeviceService {
         device.setBrand(dto.getBrand());
         device.setState(dto.getState());
         return deviceRepository.save(device);
+    }
+
+    public DeviceDTO patchDevice(Long id, Map<String, Object> updates) {
+        Device device = deviceRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Device not found with ID: " + id));
+
+        //Update only the fields that came in the map
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "name":
+                    if (device.getState() == DeviceState.IN_USE) {
+                        throw new IllegalStateException("Cannot update name while device is in use.");
+                    }
+                    device.setName((String) value);
+                    break;
+                case "brand":
+                    if (device.getState() == DeviceState.IN_USE) {
+                        throw new IllegalStateException("Cannot update brand while device is in use.");
+                    }
+                    device.setBrand((String) value);
+                    break;
+                case "state":
+                    device.setState(DeviceState.valueOf((String) value));
+                    break;
+            }
+        });
+        Device saved = deviceRepository.save(device);
+        return DeviceMapper.toDto(saved);
     }
 
     public void deleteDevice(Long id){

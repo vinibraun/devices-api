@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class DeviceControllerTest { //Web Layer Integration Test
 
     @Autowired
@@ -97,5 +99,15 @@ public class DeviceControllerTest { //Web Layer Integration Test
         assertFalse(deviceRepository.findById(savedDevice.getId()).isPresent());
     }
 
+    @Test
+    public void patchDeviceShouldUpdateName() throws Exception {
+        String jsonPatch = "{\"name\":\"newName\"}";
+
+        mockMvc.perform(patch("/api/devices/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonPatch))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("newName"));
+    }
 
 }
