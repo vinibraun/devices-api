@@ -1,29 +1,29 @@
 # 📱 Devices API
 
-Uma API RESTful para gerenciamento de dispositivos. Ideal para uso em sistemas internos que precisam monitorar, cadastrar ou alterar o estado de equipamentos utilizados em uma organização.
+A RESTful API for device management. Ideal for internal systems that need to monitor, register, or change the status of equipment used within an organization.
 
-## 📖 Ordem de desenvolvimento
-Para organização, foi feito um checklist contendo as etapas de desenvolvimento: [Checklist](https://ticktick.com/pub/project/collaboration/invite/8725aa2447ed45948bc907d2c05fa7ab?u=412388932e1641b6b7b7329e8b7bc394)
+## 📖 Development Roadmap
+For organization purposes, a checklist containing the development stages was created: [Checklist](https://ticktick.com/pub/project/collaboration/invite/8725aa2447ed45948bc907d2c05fa7ab?u=412388932e1641b6b7b7329e8b7bc394)
 
-## 🔧 Funcionalidades
+## 🔧 Features
 
-- ✅ Cadastro de novos dispositivos
-- ✏️ Atualização de dispositivos existentes
-- 🔍 Consulta por ID, marca e estado do dispositivo
-- 📋 Listagem de todos os dispositivos registrados
-- 🗑️ Remoção de dispositivos, com regras de restrição por estado
-- 🚫 Não permite alterar de dispositivos em uso
+- ✅ Registration of new devices
+- ✏️ Update of existing devices
+- 🔍 Search by ID, brand, and device status
+- 📋 Listing of all registered devices
+- 🗑️ Deletion of devices, with restrictions based on state
+- 🚫 Does not allow modifications to devices currently in use
 
-## 🧰 Tecnologias Utilizadas
+## 🧰 Technologies Used
 
 - **Java 21**
 - **Spring Boot**
 - **Maven**
-- **H2 Database** (ambiente de testes)
-- **PostgreSQL** (produção, via Docker)
-- **JUnit 5 / MockMvc** (testes de integração)
-- **Lombok** (redução de boilerplate)
-- **MapStruct** (mapeamento entre DTOs e entidades)
+- **H2 Database** (test environment)
+- **PostgreSQL** (production, via Docker)
+- **JUnit 5 / MockMvc** (integration tests)
+- **Lombok** (boilerplate reduction)
+- **MapStruct** (mapping between DTOs and entities)
 
 <div align="left">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" height="40" alt="java logo"  />
@@ -37,5 +37,5 @@ Para organização, foi feito um checklist contendo as etapas de desenvolvimento
 
 ###
 
-## Observações
-- A branch main serve como uma visão geral das funcionalidades e tecnologias. Para uma visão mais técnica, acesse a branch master, que contém a versão com cobertura de testes, configurações avançadas e documentação detalhada
+## Notes
+- The **main** branch serves as an overview of the features and technologies. For a more technical view, refer to the **master** branch, which contains the version with test coverage, advanced configurations, and detailed documentation.
