@@ -93,5 +93,25 @@ aplicar todos os princípios SOLID pode ser um overhead desnecessário nesse pro
 - Testes unitários não foram incluídos neste projeto porque o foco foi validar a integração entre os componentes da API e o banco de dados, utilizando testes de integração com MockMvc e banco em memória. Como a lógica de negócio é simples e centralizada,
 os testes de integração já cobrem de forma eficaz os principais fluxos da aplicação. Essa abordagem se mostrou suficiente para o escopo atual do projeto. Em projetos maiores ou com regras mais complexas, a inclusão de testes unitários seria essencial.
 
+## Boas práticas adotadas no projeto
+- Estrutura limpa de pacotes, organizando controllers, services, dtos, entities e repositories.
+- Uso de camadas bem definidas (Controller, Service, Repository), promovendo separação de responsabilidades.
+- Validação com @Valid e anotações do Bean Validation nos DTOs de entrada.
+- Uso de DTOs (Data Transfer Objects) para isolar a entidade da lógica de entrada/saída.
+- Uso do MapStruct para conversão clara e eficiente entre DTOs e entidades.
+- Padrão de nomenclatura claro e descritivo para classes, métodos e variáveis.
+- Tratamento de exceções centralizado com @ControllerAdvice e @ExceptionHandler.
+- Mensagens de erro amigáveis e padronizadas para retorno de exceções.
+- Utilização do ResponseEntity para retornar status HTTP apropriados nas respostas.
+- Uso do Lombok para reduzir código boilerplate e melhorar legibilidade.
+- Testes de integração com MockMvc, garantindo o comportamento real da API.
+- Persistência configurada com PostgreSQL no ambiente de produção via Docker.
+- Utilização de H2 como banco em memória para testes, desacoplando testes do ambiente externo.
+- Documentação automática da API com SpringDoc OpenAPI/Swagger.
+- Padronização RESTful nas rotas e métodos HTTP.
+- Build multi-stage no Dockerfile, otimizando a imagem final (mais leve, sem Maven).
+- Docker Compose com rede isolada, organizando aplicação e banco de forma coesa.
+- Isolamento de responsabilidades nas classes de serviço, seguindo o princípio da responsabilidade única (SRP).
+
 ## Observações
 - A branch master serve como referência técnica do projeto, contendo a versão com cobertura de testes, configurações avançadas e documentação detalhada. Para uma visão geral das funcionalidades e tecnologias, acesse a branch main.
