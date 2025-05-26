@@ -1,32 +1,32 @@
-# Devices API – Documentação Técnica
-Esta branch contém os detalhes técnicos da implementação da Devices API, incluindo decisões arquiteturais, padrões aplicados, desafios enfrentados e estratégias de desenvolvimento.
+# Devices API – Technical Documentation
+This branch contains the technical details of the Devices API implementation, including architectural decisions, applied patterns, challenges faced, and development strategies.
 
-## Visão Geral
-A Devices API foi projetada como uma solução RESTful para o gerenciamento de dispositivos. O objetivo foi criar uma base sólida, extensível e testável, aplicando boas práticas de engenharia de software.
+## Overview
+The Devices API was designed as a RESTful solution for device management. The goal was to create a solid, extensible, and testable foundation by applying software engineering best practices.
 
-## Arquitetura e Padrões
-- Arquitetura em camadas: controller, service, repository, dto, mapper e entity.
+## Architecture and Patterns
+- Layered architecture: controller, service, repository, dto, mapper, and entity.
 
-- Separação clara entre entidades de persistência e objetos de transporte (DTOs).
+- Clear separation between persistence entities and data transfer objects (DTOs).
 
-- Padrão DTO + MapStruct para abstrair a lógica de conversão entre modelos de domínio e representação externa.
+- DTO + MapStruct pattern to abstract the conversion logic between domain models and external representations.
 
-- Validações com Jakarta Bean Validation via anotações nas classes DTO.
+- Validation using Jakarta Bean Validation via annotations in DTO classes.
 
-- Testes de integração com MockMvc e banco de dados H2 em ambiente isolado.
+- Integration tests using MockMvc and H2 database in an isolated environment.
 
-- Configuração de profiles para ambiente de desenvolvimento (H2) e produção (PostgreSQL via Docker).
+- Environment profiles configured for development (H2) and production (PostgreSQL via Docker).
 
-## Tecnologias e Ferramentas
+## Technologies and Tools
 - Java 21
 
 - Spring Boot 3.5.0
 
 - Maven
 
-- PostgreSQL (persistência)
+- PostgreSQL (persistence)
 
-- H2 (testes)
+- H2 (tests)
 
 - Spring Data JPA
 
@@ -34,84 +34,80 @@ A Devices API foi projetada como uma solução RESTful para o gerenciamento de d
 
 - Springdoc OpenAPI (Swagger)
 
-- MapStruct (mapeamento automático entre DTOs e entidades)
+- MapStruct (automatic mapping between DTOs and entities)
 
-- Lombok (redução de boilerplate)
+- Lombok (boilerplate reduction)
 
-- JUnit 5 + MockMvc (testes)
+- JUnit 5 + MockMvc (testing)
 
-- Docker + Docker Compose (ambientes isolados)
+- Docker + Docker Compose (isolated environments)
 
-## Desafios e Soluções
-- Conflito de dependências entre Springdoc e Spring Boot 3.5.0:
-A versão inicial do Springdoc causava NoSuchMethodError. O problema foi solucionado atualizando para a versão mais recente do springdoc-openapi-starter-webmvc-ui, compatível com Spring Boot 3.5.0.
+## Challenges and Solutions
+- Dependency conflict between Springdoc and Spring Boot 3.5.0:
+The initial version of Springdoc caused a NoSuchMethodError. This was resolved by updating to the latest compatible version of springdoc-openapi-starter-webmvc-ui.
 
-- Gerenciamento de estados dos dispositivos:
-A lógica de negócio foi desenhada para impedir alterações e exclusões de dispositivos em uso, garantindo consistência de dados. Essa regra foi aplicada tanto no serviço quanto validada via testes.
+- Building in restricted internet environments:
+To avoid dependency resolution failures via Maven, a multi-stage Dockerfile was implemented. The Maven image is used only during the build phase and discarded in the final image, optimizing size and isolation.
 
-- Build em ambiente com acesso limitado à internet:
-Para contornar possíveis falhas na obtenção de dependências via Maven, foi implementado um Dockerfile multi-stage. A imagem maven é usada apenas no momento do build e descartada na imagem final, otimizando o tamanho e isolamento.
+- Runtime environment decoupled from the host:
+Docker Compose was used to isolate application and database services, ensuring a reproducible setup.
 
-- Ambiente de execução desacoplado do host:
-Com Docker Compose, os serviços de aplicação e banco foram isolados, garantindo uma configuração reproduzível.
+- Separate environment for testing:
+While implementing integration tests, it was discovered that the application attempted to connect to the PostgreSQL database configured for production (via Docker). This caused test failures when the container was not running. To resolve this, an in-memory H2 database was configured exclusively for the test profile, allowing the tests to run in isolation, quickly, and without external dependencies — improving reliability and performance during development.
 
-- Ambiente separado para testes:
-Durante a implementação dos testes de integração, foi identificado que a aplicação tentava se conectar ao banco de dados PostgreSQL configurado para o ambiente de produção (via Docker). Isso causava falhas nos testes automatizados
-quando o container do banco não estava em execução. Para contornar esse problema, foi configurado um banco de dados em memória usando H2 exclusivamente para o perfil de testes. Com isso, os testes passaram a rodar de forma isolada,
-rápida e sem dependência de infraestrutura externa, garantindo maior confiabilidade e performance no ciclo de desenvolvimento.
-
-## Organização do Código
+## Code Organization
   ```bash
   src/main/java/com/devices/api
-  ├── controller     → Endpoints REST
-  ├── dto            → Objetos de transferência de dados
-  ├── entity         → Entidades JPA
-  ├── mapper         → Classes MapStruct
-  ├── repository     → Interfaces JPA
-  ├── service        → Regras de negócio
-  └── exception      → Tratamento centralizado de erros
-  src/test/          → Testes de integração com cobertura dos principais fluxos
+  ├── controller     → REST endpoints
+  ├── dto            → Data Transfer Objects
+  ├── entity         → JPA entities
+  ├── mapper         → MapStruct classes
+  ├── repository     → JPA interfaces
+  ├── service        → Business logic
+  └── exception      → Centralized error handling
+  src/test/          → Integration tests covering key application flows
   ```
 
-## 🚀 Como executar
+## 🚀 How to Run
 
-1. Clone o projeto:
+1. Clone the project:
    ```bash
    git clone https://github.com/seuusuario/devices-api.git
    cd devices-api
-2. Adicionalmente, caso queira, pode testar os arquivos test com o comando:
+2. Optionally, run the tests with:
    ```bash
    mvn test
-3. Inicie os serviços com Docker (altere informações de banco no docker-compose.yml se achar necessário):
+3. Start the services with Docker (edit docker-compose.yml if necessary):
    ```bash
    docker compose up --build
-4. Acesse a documentação da API (Swagger) em: http://localhost:8080/swagger-ui.html
+4. Access the API documentation (Swagger) at: http://localhost:8080/swagger-ui.html
 
-## Considerações e melhorias
-- Alguns princípios SOLID foram aplicados, como SRP e DIP (parcialmente, via @Autowired e construtores que reduzem o acoplamento). O SOLID não foi totalmente aplicado por conta de se tratar de uma aplicação relativamente pequena, com domínio simples e pouco sujeito à mudanças e/ou múltiplas interpretações,
-aplicar todos os princípios SOLID pode ser um overhead desnecessário nesse projeto. O objetivo aqui foi manter o código simples, com implementações diretas e claras e fáceis de manter. Caso o projeto se estenda, SOLID será bem-vindo.
-- Testes unitários não foram incluídos neste projeto porque o foco foi validar a integração entre os componentes da API e o banco de dados, utilizando testes de integração com MockMvc e banco em memória. Como a lógica de negócio é simples e centralizada,
-os testes de integração já cobrem de forma eficaz os principais fluxos da aplicação. Essa abordagem se mostrou suficiente para o escopo atual do projeto. Em projetos maiores ou com regras mais complexas, a inclusão de testes unitários seria essencial.
+**Don't forget to set up your local database properly.**
+Make sure to check all configuration files (such as application.properties, docker-compose.yml) for correct database settings, including host, port, username, and password. Verifying these details ensures the application connects successfully both locally and in containers.
 
-## Boas práticas adotadas no projeto
-- Estrutura limpa de pacotes, organizando controllers, services, dtos, entities e repositories.
-- Uso de camadas bem definidas (Controller, Service, Repository), promovendo separação de responsabilidades.
-- Validação com @Valid e anotações do Bean Validation nos DTOs de entrada.
-- Uso de DTOs (Data Transfer Objects) para isolar a entidade da lógica de entrada/saída.
-- Uso do MapStruct para conversão clara e eficiente entre DTOs e entidades.
-- Padrão de nomenclatura claro e descritivo para classes, métodos e variáveis.
-- Tratamento de exceções centralizado com @ControllerAdvice e @ExceptionHandler.
-- Mensagens de erro amigáveis e padronizadas para retorno de exceções.
-- Utilização do ResponseEntity para retornar status HTTP apropriados nas respostas.
-- Uso do Lombok para reduzir código boilerplate e melhorar legibilidade.
-- Testes de integração com MockMvc, garantindo o comportamento real da API.
-- Persistência configurada com PostgreSQL no ambiente de produção via Docker.
-- Utilização de H2 como banco em memória para testes, desacoplando testes do ambiente externo.
-- Documentação automática da API com SpringDoc OpenAPI/Swagger.
-- Padronização RESTful nas rotas e métodos HTTP.
-- Build multi-stage no Dockerfile, otimizando a imagem final (mais leve, sem Maven).
-- Docker Compose com rede isolada, organizando aplicação e banco de forma coesa.
-- Isolamento de responsabilidades nas classes de serviço, seguindo o princípio da responsabilidade única (SRP).
+## Considerations and Improvements
+- Some SOLID principles were applied, such as SRP and DIP (partially, via @Autowired and constructor injection). Not all SOLID principles were applied due to the project's small scope, simple domain, and low variability. Fully applying SOLID might be unnecessary overhead in this context. The goal was to keep the code clean, direct, and easy to maintain. If the project grows, SOLID principles will be more thoroughly incorporated.
+- Unit tests were not included because the focus was on validating the integration between API components and the database, using integration tests with MockMvc and an in-memory database. Given the centralized and simple business logic, integration testing proved sufficient for the current scope. For larger projects or more complex rules, unit testing would be essential.
 
-## Observações
-- A branch master serve como referência técnica do projeto, contendo a versão com cobertura de testes, configurações avançadas e documentação detalhada. Para uma visão geral das funcionalidades e tecnologias, acesse a branch main.
+## Best Practices Adopted
+- Clean package structure, organizing controllers, services, DTOs, entities, and repositories.
+- Clear separation of concerns using well-defined layers (Controller, Service, Repository).
+- Validation using @Valid and Bean Validation annotations in input DTOs.
+- Use of DTOs to isolate entities from input/output logic.
+- Use of MapStruct for efficient and clear DTO-to-entity conversion.
+- Descriptive and consistent naming conventions for classes, methods, and variables.
+- Centralized exception handling using @ControllerAdvice and @ExceptionHandler.
+- Friendly and standardized error messages.
+- Use of ResponseEntity to return appropriate HTTP status codes.
+- Lombok for reducing boilerplate and improving readability.
+- Integration testing with MockMvc to ensure real API behavior.
+- PostgreSQL for persistence in production via Docker.
+- H2 in-memory database for testing, decoupled from the external environment.
+- Automatic API documentation using SpringDoc OpenAPI/Swagger.
+- RESTful conventions in routes and HTTP methods.
+- Multi-stage Dockerfile for a lighter final image (no Maven).
+- Docker Compose with isolated networking, organizing application and database coherently.
+- Service class responsibility isolation following the Single Responsibility Principle (SRP).
+
+## Notes
+- The **master** branch serves as the technical reference for the project, containing the version with test coverage, advanced configurations, and detailed documentation. For a general overview of the features and technologies, refer to the **main** branch.
