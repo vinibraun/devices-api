@@ -79,13 +79,16 @@ rápida e sem dependência de infraestrutura externa, garantindo maior confiabil
    ```bash
    git clone https://github.com/seuusuario/devices-api.git
    cd devices-api
-2. Inicie os serviços com Docker (altere informações de banco no docker-compose.yml se achar necessário):
+2. Adicionalmente, caso queira, pode testar os arquivos test com o comando:
+   ```bash
+   mvn test
+3. Inicie os serviços com Docker (altere informações de banco no docker-compose.yml se achar necessário):
    ```bash
    docker compose up --build
-3. Acesse a documentação da API (Swagger) em: http://localhost:8080/swagger-ui.html
+4. Acesse a documentação da API (Swagger) em: http://localhost:8080/swagger-ui.html
 
 ## Considerações e melhorias
-- Alguns princípios SOLID foram aplicados, como SRP e DIP (parcialmente). O SOLID não foi totalmente aplicado por conta de se tratar de uma aplicação relativamente pequena, com domínio simples e pouco sujeito à mudanças e/ou múltiplas interpretações,
+- Alguns princípios SOLID foram aplicados, como SRP e DIP (parcialmente, via @Autowired e construtores que reduzem o acoplamento). O SOLID não foi totalmente aplicado por conta de se tratar de uma aplicação relativamente pequena, com domínio simples e pouco sujeito à mudanças e/ou múltiplas interpretações,
 aplicar todos os princípios SOLID pode ser um overhead desnecessário nesse projeto. O objetivo aqui foi manter o código simples, com implementações diretas e claras e fáceis de manter. Caso o projeto se estenda, SOLID será bem-vindo.
 - Testes unitários não foram incluídos neste projeto porque o foco foi validar a integração entre os componentes da API e o banco de dados, utilizando testes de integração com MockMvc e banco em memória. Como a lógica de negócio é simples e centralizada,
 os testes de integração já cobrem de forma eficaz os principais fluxos da aplicação. Essa abordagem se mostrou suficiente para o escopo atual do projeto. Em projetos maiores ou com regras mais complexas, a inclusão de testes unitários seria essencial.
