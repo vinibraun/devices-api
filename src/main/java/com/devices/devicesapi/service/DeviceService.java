@@ -20,11 +20,12 @@ public class DeviceService {
         this.deviceRepository = deviceRepository;
     }
 
-    public Device createDevice(DeviceDTO dto){
-        return deviceRepository.save(DeviceMapper.toEntity(dto));
+    public DeviceDTO createDevice(DeviceDTO dto){
+        Device device = deviceRepository.save(DeviceMapper.toEntity(dto));
+        return DeviceMapper.toDto(device);
     }
 
-    public Device updateDevice(Long id, DeviceDTO dto){
+    public DeviceDTO updateDevice(Long id, DeviceDTO dto){
         Device device = deviceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Device not found with ID: " + id));
 
@@ -36,7 +37,8 @@ public class DeviceService {
         device.setName(dto.getName());
         device.setBrand(dto.getBrand());
         device.setState(dto.getState());
-        return deviceRepository.save(device);
+        deviceRepository.save(device);
+        return DeviceMapper.toDto(device);
     }
 
     public DeviceDTO patchDevice(Long id, Map<String, Object> updates) {

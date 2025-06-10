@@ -2,8 +2,6 @@ package com.devices.devicesapi.controller;
 
 import com.devices.devicesapi.dto.DeviceDTO;
 import com.devices.devicesapi.dto.ErrorResponse;
-import com.devices.devicesapi.entity.Device;
-import com.devices.devicesapi.mapper.DeviceMapper;
 import com.devices.devicesapi.service.DeviceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,8 +36,7 @@ public class DeviceController {
     })
     @PostMapping
     public ResponseEntity<DeviceDTO> createDevice(@Valid @RequestBody DeviceDTO deviceDTO) {
-        Device device = deviceService.createDevice(deviceDTO);
-        DeviceDTO responseDTO = DeviceMapper.toDto(device);
+        DeviceDTO responseDTO = deviceService.createDevice(deviceDTO);
         return ResponseEntity.status(201).body((responseDTO));
     }
 
@@ -55,8 +52,7 @@ public class DeviceController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<DeviceDTO> updateDevice(@PathVariable Long id, @Valid @RequestBody DeviceDTO deviceDTO) {
-        Device device = deviceService.updateDevice(id, deviceDTO);
-        DeviceDTO responseDTO = DeviceMapper.toDto(device);
+        DeviceDTO responseDTO = deviceService.updateDevice(id, deviceDTO);
         return ResponseEntity.ok().body((responseDTO));
     }
 
